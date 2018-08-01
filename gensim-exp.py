@@ -6,10 +6,13 @@ import preprocessor as p
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
-def remove_dates(string_to_parse):
-    return filter(
-        lambda word: not re.match('^(?:(?:[0-9]{2}[:/,]){2}[0-9]{2,4}|am|pm)$',
-                                  word), string_to_parse)
+def remove_dates(tokens):
+    parsed = []
+    for token in tokens:
+        if not re.match('^(?:(?:[0-9]{2,4}[-:,]){2}[0-9]{2}|am|pm)$', token):
+            parsed.append(token)
+
+    return parsed
 
 
 class MySentences:
@@ -21,7 +24,6 @@ class MySentences:
     def __iter__(self):
         logging.info(
             "reading file {0}...this may take a while".format(self.filename))
-#        with gzip.open(self.filename, 'rb') as f:
         with open(self.filename, encoding='utf-8') as f:
             for line in f:
                 if not self.len_set:
