@@ -39,7 +39,7 @@ class MySentences:
         return self.len
 
 
-documents = MySentences('tweets.txt')
+documents = MySentences('corpus.txt')
 model = gensim.models.Word2Vec(
     documents,
     size=300,
