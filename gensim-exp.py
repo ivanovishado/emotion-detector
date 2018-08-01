@@ -3,7 +3,21 @@ import gensim
 import logging
 import preprocessor as p
 
-logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',
+                    level=logging.INFO)
+
+
+def process_text(text):
+    """
+    Applies basic tweet-processing, such as removing users, retweets, hashtags,
+    etc. then tokenizes the string.
+    Ignored indexes of a preprocessed string:
+        0 -> ID of the tweet.
+        n-1 and n -> timestamp of the tweet.
+    :param text: Text to be parsed.
+    :return: Text parsed.
+    """
+    return gensim.utils.simple_preprocess(p.clean(text))[1:-2]
 
 
 def remove_dates(tokens):
@@ -28,10 +42,7 @@ class MySentences:
             for line in f:
                 if not self.len_set:
                     self.len += 1
-#                yield gensim.utils.simple_preprocess(line)
-#                yield gensim.utils.simple_preprocess(p.clean(line))
-                yield remove_dates(
-                    gensim.utils.simple_preprocess(p.clean(line))[1:])
+                yield process_text(line)
 
         self.len_set = True
 
