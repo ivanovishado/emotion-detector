@@ -1,9 +1,15 @@
-import gzip
+import re
 import gensim
 import logging
 import preprocessor as p
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
+
+def remove_dates(string_to_parse):
+    return filter(
+        lambda word: not re.match('^(?:(?:[0-9]{2}[:/,]){2}[0-9]{2,4}|am|pm)$',
+                                  word), string_to_parse)
 
 
 class MySentences:
@@ -21,7 +27,9 @@ class MySentences:
                 if not self.len_set:
                     self.len += 1
 #                yield gensim.utils.simple_preprocess(line)
-                yield gensim.utils.simple_preprocess(p.clean(line))
+#                yield gensim.utils.simple_preprocess(p.clean(line))
+                yield remove_dates(
+                    gensim.utils.simple_preprocess(p.clean(line))[1:])
 
         self.len_set = True
 
