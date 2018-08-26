@@ -16,7 +16,7 @@ def get_docs(filenames):
     max_length = 0
     class_id = 0
     for filename in filenames:
-        with open(filename, encoding='utf-8') as f:
+        with open(filename, encoding='latin-1') as f:
             actual_lines = []
             for line in f:
                 tokenized = tokenize(line)
@@ -81,7 +81,7 @@ model.compile(optimizer='rmsprop',
 # summarize the model
 print(model.summary())
 # fit the model
-model.fit(padded_docs, labels, epochs=50, verbose=0)
+model.fit(padded_docs, labels, epochs=50, verbose=1)
 # evaluate the model
 loss, accuracy = model.evaluate(padded_docs, labels, verbose=0)
 print('Accuracy: %f' % (accuracy*100))
