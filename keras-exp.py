@@ -16,7 +16,7 @@ def get_docs(filenames):
     max_length = 0
     class_id = 0
     for filename in filenames:
-        with open(filename) as f:
+        with open(filename, encoding='utf-8') as f:
             actual_lines = []
             for line in f:
                 tokenized = tokenize(line)
