@@ -1,32 +1,9 @@
-import re
 import gensim
 import logging
-import preprocessor as p
+from utils import tokenize
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',
                     level=logging.INFO)
-
-
-def process_text(text):
-    """
-    Applies basic tweet-processing, such as removing users, retweets, hashtags,
-    etc. then tokenizes the string.
-    Ignored indexes of a preprocessed string:
-        0 -> ID of the tweet.
-        n-1 and n -> timestamp of the tweet.
-    :param text: Text to be parsed.
-    :return: Text parsed.
-    """
-    return gensim.utils.simple_preprocess(p.clean(text))[1:-2]
-
-
-def remove_dates(tokens):
-    parsed = []
-    for token in tokens:
-        if not re.match('^(?:(?:[0-9]{2,4}[-:,]){2}[0-9]{2}|am|pm)$', token):
-            parsed.append(token)
-
-    return parsed
 
 
 class MySentences:
@@ -42,7 +19,7 @@ class MySentences:
             for line in f:
                 if not self.len_set:
                     self.len += 1
-                yield process_text(line)
+                yield tokenize(line)
 
         self.len_set = True
 
@@ -59,4 +36,4 @@ model = gensim.models.Word2Vec(
     workers=10)
 model.train(documents, total_examples=len(documents), epochs=10)
 
-model.wv.save_word2vec_format('model.w2v.txt')
+model.wv.save_word2vec_format('resources/model.w2v.txt')
