@@ -36,4 +36,4 @@ model = gensim.models.Word2Vec(
     workers=10)
 model.train(documents, total_examples=len(documents), epochs=10)
 
-model.wv.save_word2vec_format('resources/model.w2v.txt')
+model.wv.save_word2vec_format('model.w2v.txt')

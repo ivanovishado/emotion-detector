@@ -50,7 +50,7 @@ padded_docs = pad_sequences(encoded_docs, maxlen=max_length, padding='post')
 # print(padded_docs)
 # load the whole embedding into memory
 embeddings_index = dict()
-f = open('resources/model.w2v.txt')
+f = open('model.w2v.txt')
 for line in f:
     values = line.split()
     word = values[0]
