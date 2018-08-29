@@ -4,6 +4,8 @@ from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, LSTM
 import keras
+from keras.callbacks import CSVLogger
+
 from utils import tokenize
 
 INPUT_DIM = 300
@@ -80,8 +82,12 @@ model.compile(optimizer='rmsprop',
               metrics=['accuracy'])
 # summarize the model
 print(model.summary())
+
+# create callback
+csv_logger = CSVLogger('log.csv', append=True, separator=';')
+
 # fit the model
-model.fit(padded_docs, labels, epochs=50, verbose=1)
+model.fit(padded_docs, labels, epochs=10, callbacks=[csv_logger])
 # evaluate the model
 loss, accuracy = model.evaluate(padded_docs, labels, verbose=0)
 print('Accuracy: %f' % (accuracy*100))
