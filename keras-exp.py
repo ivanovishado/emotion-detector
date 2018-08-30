@@ -73,8 +73,8 @@ model.add(Embedding(vocab_size,
                     weights=[embedding_matrix],
                     input_length=max_length,
                     trainable=False))
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
-model.add(Dense(6, activation='softmax'))
+model.add(LSTM(INPUT_DIM, dropout=0.2, recurrent_dropout=0.2))
+model.add(Dense(NUM_CLASSES, activation='softmax'))
 
 # compile the model
 model.compile(optimizer='rmsprop',
@@ -84,10 +84,10 @@ model.compile(optimizer='rmsprop',
 print(model.summary())
 
 # create callback
-csv_logger = CSVLogger('log.csv', append=True, separator=';')
+csv_logger = CSVLogger('log.csv', append=True, separator=',')
 
 # fit the model
-model.fit(padded_docs, labels, epochs=10, callbacks=[csv_logger])
+model.fit(padded_docs, labels, epochs=50, callbacks=[csv_logger])
 # evaluate the model
 loss, accuracy = model.evaluate(padded_docs, labels, verbose=0)
 print('Accuracy: %f' % (accuracy*100))
